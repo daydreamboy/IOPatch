@@ -1,0 +1,11 @@
+require '~/GitHub_Projects/HelloRuby/ruby_tool/podfile_tool.rb'
+require '~/GitHub_Projects/HelloRuby/ruby_tool/dump_tool.rb'
+
+use_frameworks!
+install! 'cocoapods', :deterministic_uuids => false
+
+platform :ios, '9.0'
+
+target 'IOPatch_Example' do
+  pod 'TBWeiwo', :path => '../TBWeiwo/TBWeiwo.podspec'
+end

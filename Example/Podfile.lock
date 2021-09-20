@@ -1,0 +1,16 @@
+PODS:
+  - TBWeiwo (0.0.1)
+
+DEPENDENCIES:
+  - TBWeiwo (from `../TBWeiwo/TBWeiwo.podspec`)
+
+EXTERNAL SOURCES:
+  TBWeiwo:
+    :path: "../TBWeiwo/TBWeiwo.podspec"
+
+SPEC CHECKSUMS:
+  TBWeiwo: c66f05d5133ee5049b9f3f14abe4d395f6651568
+
+PODFILE CHECKSUM: 7c3126a1022398121f9d43cace6f2dfc1915f82e
+
+COCOAPODS: 1.9.3
