@@ -15,11 +15,95 @@ A patch solution for Objective-C runtime
 
 
 
+pegjs解析结构
+
+
+
+* 表达式
+* 语句
+
+
+
+表达式，支持两种形式
+
+```
+表达式列表: expr1,expr2,expr3,...
+表达式元组：(expr1,expr2,expr3,...)
+```
+
+
+
+语句，支持下面几种形式
+
+* return语句
+* 定义语句(int a = 1)
+* 
+
+
+
+待补充
+
+main_call
+
+once_call
+
+
+
+
+
+支持多个表达式，由注释`//`、`;`或`\n`分隔
+
+
+
+
+
+## BUG List
+
+
+
+```c
+int a = 1;
+for (int i = 1; i < 10; i++) {
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## OCS支持的语法
 
-### (1) 基本语法
+### (1) C语法
 
 #### a. 数据类型 (Data Type)
+
+
+
+```properties
+/// Syntax - Data Type
+///////////////////////
+NUMBER = FLOAT / INTEGER / HEXADECIMAL
+FLOAT = str:$( ('-')?  [0-9]+ '.' [0-9]+ ) { return parseFloat(str) }
+INTEGER = str:$( ('-')? [0-9]+) (! 'x') { return parseInt(str) }
+HEXADECIMAL = $( '0x' [a-fA-F0-9]+ )
+```
+
+
+
+
+
+#### b. Type Encoding
 
 定义数据类型的rule，如下
 
@@ -53,12 +137,16 @@ integer_encoding = 'char' { return 'c' }
 
 
 
-#### a. 参数列表
+#### c. 参数列表(parameter_list)
+
+用于匹配C函数签名
 
 ```properties
 ```
 
 
+
+> 单测代码，见parameter_list.pegjs
 
 
 
@@ -71,11 +159,131 @@ integer_encoding = 'char' { return 'c' }
 OC的block，如下
 
 ```objective-c
+block_spec = '^' S returnEncoding:type_encoding? S params:param_list? S body:code_block {
+  if (!returnEncoding) {
+    returnEncoding = 'v'
+  }
+  const paramsEncoding = params ? params.map(params => param.type).join('') : ''
+  const signature = returnEncoding + '@' + paramsEncoding
+  const paramNames = param ? param.map(pair => pair.name) : []
+  return {
+    type: 'block',
+    signature,
+    paramNames,
+    body
+  }
+}
 ```
 
 
 
-(2) 
+#### b. 方法调用
+
+OC方法调用有三种形式
+
+* 无参数调用
+* 至少一个参数，但最后一个参数不是可变参数
+* 至少一个参数，但最后一个参数是可变参数
+
+
+
+
+
+### (3) OCS语法 
+
+OCS顶级语句
+
+* hook group语句
+* await语句
+* key:value语句
+* 三元运算符
+* 连接符
+* 逻辑运算符
+* 算术运算符
+* 位移运算符
+* 比较运算符
+
+* @main块
+* @once块
+
+
+
+
+
+三元运算符
+
+```c
+1 ? a : b
+```
+
+
+
+连接符
+
+```c
+1..3
+```
+
+
+
+@main块
+
+```
+@main {
+
+}
+```
+
+
+
+@once块
+
+```
+@once {
+
+}
+或者
+@once identifier {
+
+}
+```
+
+
+
+
+
+#### a. hook group
+
+```objective-c
+@hook Demo1ViewController
+- (void)viewDidLoad  {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+}
+@end
+```
+
+
+
+#### b. await
+
+
+
+#### c. key:value语句
+
+```
+"a":b
+```
+
+
+
+#### d. 三元运算符
+
+
+
+
+
+
 
 
 
