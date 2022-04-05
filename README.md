@@ -1,4 +1,4 @@
-# OCPatch
+# OCSatch
 [TOC]
 
 
@@ -41,6 +41,131 @@ pegjs解析结构
 
 
 
+表达式，支持下面几种形式
+
+* 赋值表达式
+* 
+
+
+
+语句=>函数调用
+
+表达式=>函数调用或对象调用
+
+> 表达式由变量和操作符组成
+
+
+
+int i = 0;
+
+i = i++
+
+```json
+[
+  {
+     "name": "updateSlot",
+     "args": [
+        [
+           {
+              "literal": "a"
+           }
+        ],
+        [
+           {
+              "name": "a"
+           },
+           {
+              "name": "+",
+              "args": [
+                 [
+                    {
+                       "literal": 1
+                    }
+                 ]
+              ]
+           }
+        ]
+     ]
+  }
+]
+```
+
+
+
+```json
+[
+   {
+      "name": "a"
+   },
+   {
+      "name": "+",
+      "args": [
+         [
+            {
+               "literal": 1
+            }
+         ]
+      ]
+   }
+]
+```
+
+
+
+
+
+
+
+```
+[
+   {
+      "name": "updateSlot",
+      "args": [
+         [
+            {
+               "literal": "i"
+            }
+         ],
+         [
+            {
+               "name": "updateSlot",
+               "args": [
+                  [
+                     {
+                        "literal": "a"
+                     }
+                  ],
+                  [
+                     {
+                        "name": "a"
+                     },
+                     {
+                        "name": "+",
+                        "args": [
+                           [
+                              {
+                                 "literal": 1
+                              }
+                           ]
+                        ]
+                     }
+                  ]
+               ]
+            }
+         ]
+      ]
+   }
+]
+```
+
+
+
+
+
+
+
+
+
 待补充
 
 main_call
@@ -66,6 +191,36 @@ int a = 1;
 for (int i = 1; i < 10; i++) {
 
 }
+```
+
+
+
+```
+i = i++
+```
+
+
+
+```
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion;
+```
+
+
+
+```
+id b = ^(void) {
+
+};
+```
+
+
+
+## Omit
+
+```
+id b = ^ (int, int) {
+
+};
 ```
 
 
@@ -293,12 +448,12 @@ OCS顶级语句
 
 patch通道，主要指patch下发通过哪种方式触达到端上。
 
-OCPatch支持内置2种通道，以及能很方便到适配外部的数据通道。
+OCSatch支持内置2种通道，以及能很方便到适配外部的数据通道。
 
 内置的两种通道分别是：调试通道和业务通道
 
-* 调试通道，就是在开发阶段过程中，自建临时server，OCPatch会自动开启http client去尝试链接这个服务器。
-* 业务通道，就是在线上环境，服务端提供一个socket链接url，OCPatch可以连接这个服务器地址。
+* 调试通道，就是在开发阶段过程中，自建临时server，OCSatch会自动开启http client去尝试链接这个服务器。
+* 业务通道，就是在线上环境，服务端提供一个socket链接url，OCSatch可以连接这个服务器地址。
 
 
 
@@ -1118,6 +1273,20 @@ blockSpec
 npm install --legacy-peer-deps
 
 https://stackoverflow.com/questions/64936044/fix-the-upstream-dependency-conflict-installing-npm-packages
+
+
+
+
+
+OCS内置方法
+
+* declareCFunctions:
+* createBlock:
+* hookClass:
+
+
+
+
 
 
 

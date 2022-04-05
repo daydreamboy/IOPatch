@@ -7,5 +7,5 @@ install! 'cocoapods', :deterministic_uuids => false
 platform :ios, '9.0'
 
 target 'IOPatch_Example' do
-  pod 'TBWeiwo', :path => '../TBWeiwo/TBWeiwo.podspec'
+  pod 'OCS', :path => '../OCS/OCS.podspec'
 end

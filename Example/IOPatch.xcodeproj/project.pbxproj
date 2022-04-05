@@ -305,11 +305,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-IOPatch_Example/Pods-IOPatch_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/TBWeiwo/TBWeiwo.framework",
+				"${BUILT_PRODUCTS_DIR}/OCS/OCS.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TBWeiwo.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCS.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
