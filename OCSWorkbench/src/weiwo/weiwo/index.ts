@@ -1,7 +1,7 @@
-import WeiwoRequest from './models/weiwoRequest';
-import WeiwoResponse from './models/weiwoResponse';
+import WeiwoRequest from '../models/weiwoRequest';
+import WeiwoResponse from '../models/weiwoResponse';
 import axios from 'axios';
-import StorageTool from './storage-tool';
+import StorageTool from '../storage-tool';
 
 // MARK: default configuration
 const simulatorIP = '127.0.0.1:2222';
@@ -114,7 +114,16 @@ class Weiwo {
 
   // Manage device IPs
   static saveDeviceIPs(deviceIPs: Array<string>): void {
-    Weiwo.DeviceIPs = [... new Set(deviceIPs)];
+    // @see https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+    // BUG: return [] using [... new Set(deviceIPs)];
+    //Weiwo.DeviceIPs = [... new Set(deviceIPs)];
+
+    Weiwo.DeviceIPs = deviceIPs.filter(function(item, pos) {
+      return deviceIPs.indexOf(item) == pos;
+    })
+    console.log(deviceIPs);
+    console.log(Weiwo.DeviceIPs);
+
     StorageTool.saveStringArrayToStorage(storageKeyDeviceIPs, Weiwo.DeviceIPs);
   }
 

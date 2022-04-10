@@ -43,9 +43,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import WeiwoRequest from './models/weiwoRequest';
+import WeiwoRequest from '../models/weiwoRequest';
 import axios from 'axios';
-import StorageTool from './storage-tool';
+import StorageTool from '../storage-tool';
 // MARK: default configuration
 var simulatorIP = '127.0.0.1:2222';
 var storageKeyDeviceIPs = 'deviceIPs';

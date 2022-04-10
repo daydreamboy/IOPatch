@@ -8,7 +8,7 @@ import {
   History,
   Refresh,
 } from '@icon-park/react';
-import Weiwo from '../../weiwo';
+import Weiwo from '@/weiwo/weiwo';
 import { setStateAsync } from "@/weiwo/utils";
 
 type HomeState = {
@@ -29,6 +29,8 @@ export default class Home extends Component<{}, HomeState> {
   }
 
   async saveDeviceIPs(deviceIPs: string[]) {
+    console.log("save deviceIPs: " + deviceIPs);
+
     Weiwo.saveDeviceIPs(deviceIPs)
     await this.refreshDeviceList()
   }
@@ -51,6 +53,7 @@ export default class Home extends Component<{}, HomeState> {
         const newDeviceIP = arg
         deviceIPs.unshift(newDeviceIP)
       }
+
       await this.saveDeviceIPs(deviceIPs)
     }
 

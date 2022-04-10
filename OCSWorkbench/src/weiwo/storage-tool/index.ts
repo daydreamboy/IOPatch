@@ -31,6 +31,9 @@ class StorageTool {
     }
 
     const jsonString = JSON.stringify(value);
+    console.log(value);
+    console.log('value: ' + value);
+    console.log('save: ' + jsonString);
     window.localStorage.setItem(key, jsonString);
 
     return true;

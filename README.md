@@ -1,4 +1,4 @@
-# OCSatch
+# Objective-C Script (OCS)
 [TOC]
 
 
@@ -238,6 +238,22 @@ id b = ^ (int, int) {
 
 
 ## OCS支持的语法
+
+
+
+| keyword | 作用           | 说明 |
+| ------- | -------------- | ---- |
+| `$`     | 代表虚拟机本身 |      |
+
+
+
+
+
+
+
+
+
+## OCS Parser规则
 
 ### (1) C语法
 

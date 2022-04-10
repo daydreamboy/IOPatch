@@ -25,7 +25,7 @@
   "scripts": {
     "start": "icejs start",
     "build": "icejs build",
-    "build-weiwo": "tsc src/weiwo/index.ts src/weiwo/**/*.ts -m es2015",
+    "build-weiwo": "tsc src/weiwo/weiwo/index.ts src/weiwo/**/*.ts -m es2015",
     "run-weiwo": "node -r esm ./src/parsers/ocs-runner.js",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx ./",

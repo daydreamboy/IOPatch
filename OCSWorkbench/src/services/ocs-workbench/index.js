@@ -1,4 +1,4 @@
-import Weiwo from "../../weiwo";
+import Weiwo from "../../weiwo/weiwo";
 
 export async function setupHomePageDataFunctions(_spec = 0) {
   return await Weiwo.vm(_spec).callBlock(

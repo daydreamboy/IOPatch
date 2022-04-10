@@ -3,7 +3,7 @@
 import fs from 'fs';
 import readline from 'readline';
 import OcsParser from './ocs-parser';
-import Weiwo from '../weiwo';
+import Weiwo from '../weiwo/weiwo';
 
 function read_file(io_file) {
   return io_file == '-' ? fs.readFileSync(0).toString() : fs.readFileSync(io_file).toString()
