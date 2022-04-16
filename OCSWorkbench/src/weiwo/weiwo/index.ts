@@ -86,10 +86,10 @@ class Weiwo {
 
   async sendRequest(body: object): Promise<any> {
     const url = this.url ? this.url : Weiwo.defaultURL()
-    console.log('requesting');
+    console.log('requesting: ' + url);
     console.log('ast: ' + JSON.stringify(body));
     try {
-      const dict = <WeiwoResponse>(await axios.post(url, body, { timeout: 10000 })).data
+      const dict = <WeiwoResponse>(await axios.post(url, body, { timeout: 30000 })).data
 
       if (dict.ok) {
         const result = dict.result
@@ -107,12 +107,12 @@ class Weiwo {
         return Promise.reject(new Error(dict.msg))
       }
     } catch (err) {
-      console.error('weiwo: ' + err);
+      console.error('[OCSWorkbench] ' + err);
       return undefined
     }
   }
 
-  // Manage device IPs
+  // Manage device IPs 2
   static saveDeviceIPs(deviceIPs: Array<string>): void {
     // @see https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
     // BUG: return [] using [... new Set(deviceIPs)];
