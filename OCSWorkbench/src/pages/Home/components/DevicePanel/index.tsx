@@ -6,29 +6,6 @@ import {Loading, Close, Apple, Android} from "@icon-park/react";
 import {Button, Tag} from "@alifd/next";
 import React from 'react';
 
-type PlatformIconProps = {
-  platform: 'iOS' | 'Android'
-}
-
-type AppStatus = PlatformIconProps & {
-  bundleIdentifier: string
-  bundleDisplayName: string
-  did: string
-}
-
-type DevicePanelProps = {
-  deviceIP: string
-  index: number
-  setDefaultCallback: () => void
-  removeDeviceCallback: () => void
-  showRemoveButton: boolean
-}
-
-type DevicePanelState = {
-  status: 'offline' | 'fetching' | 'online'
-  info: AppStatus | null
-}
-
 const PlatformIcon: FunctionComponent<PlatformIconProps> = ({ platform }) => {
   switch (platform) {
     case 'iOS':

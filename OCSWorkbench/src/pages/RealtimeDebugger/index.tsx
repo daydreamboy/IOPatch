@@ -1,15 +1,17 @@
 import * as React from 'react';
-// import { ResponsiveGrid } from '@alifd/next';
-// import Guide from './components/Guide';
+import {Component} from "react";
 
-// const { Cell } = ResponsiveGrid;
-
-const RealtimeDebugger = () => {
-  return (
-    <div>
-      这时调试页面
-    </div>
-  );
-};
+class RealtimeDebugger extends Component<{}, {
+  scripts: NameSourcePair[],
+  instructionCode: string | null,
+}> {
+  render() {
+    return (
+      <div>
+        这时调试页面2222
+      </div>
+    );
+  }
+}
 
 export default RealtimeDebugger;
