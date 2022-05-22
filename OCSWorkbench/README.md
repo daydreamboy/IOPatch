@@ -90,3 +90,96 @@ OCPWorkbench采用ice.js模板的基础Layout生成。
 
   * package.json，表示ocs_unit_test文件夹也是可以运行，它有一个index.js，作为入口文件，主要驱动test文件夹下面的代码
 
+
+
+## 2、组件
+
+### (1) AceEditor
+
+安装
+
+```shell
+$ npm install react-ace ace-builds
+```
+
+文档：https://github.com/securingsincity/react-ace/
+
+示例地址：https://securingsincity.github.io/react-ace/
+
+
+
+#### a. 支持Objective-C语法高亮
+
+安装
+
+```shell
+$ npm install brace
+```
+
+
+
+```javascript
+import React from "react";
+import {FunctionComponent} from "react";
+import AceEditor from "react-ace";
+import 'brace/mode/objectivec';
+import 'brace/theme/xcode';
+import 'brace/mode/objectivec';
+import 'brace/theme/xcode';
+
+const ObjectiveCCodeEditor: FunctionComponent<ObjectiveCCodeEditorProps> = ({ value, onChange }) => (
+  <AceEditor
+    name="objectiveCCodeEditor"
+    mode='objectivec'
+    enableBasicAutocompletion={true}
+    enableLiveAutocompletion={true}
+    enableSnippets={true}
+    style={{ width: '100%', fontFamily: 'Monospace' }}
+    theme='xcode'
+    value={value}
+    wrapEnabled={true}
+    onChange={onChange}
+  />
+)
+```
+
+
+
+
+
+
+
+## 3、如何使用React Bootstrap
+
+安装库
+
+```shell
+$ npm install react-bootstrap bootstrap
+```
+
+
+
+
+
+导入样式
+
+```javascript
+{/* The following line can be included in your src/index.js or App.js file*/}
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+```
+
+
+
+
+
+### Accordion
+
+文档：https://react-bootstrap.netlify.app/components/accordion/
+
+
+
+
+
+
+
