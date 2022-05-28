@@ -6,16 +6,15 @@ import OcsParser from './ocs-parser';
 import Weiwo from '../weiwo/weiwo';
 
 function read_file(io_file) {
-  return io_file == '-' ? fs.readFileSync(0).toString() : fs.readFileSync(io_file).toString()
+  return io_file == '-' ? fs.readFileSync(0).toString() : fs.readFileSync(io_file).toString();
 }
 
 function compile_to_ast(ocs_code) {
   let ast = null;
   try {
     ast = OcsParser.parse(ocs_code);
-  }
-  catch (e) {
-    process.stderr.write(e.message + '\n');
+  } catch (e) {
+    process.stderr.write(`${e.message }\n`);
   }
 
   return ast;
@@ -26,22 +25,20 @@ function run_ast(ast, completeFunc) {
     if (result instanceof Weiwo) {
       const { type } = result.target;
       if (type == 'object') {
-        process.stdout.write(result.target.description + '\n');
-      }
-      else if (type == 'class') {
+        process.stdout.write(`${result.target.description }\n`);
+      } else if (type == 'class') {
         process.stdout.write(`Class: ${result.target.name}\n`);
       }
-    }
-    else {
+    } else {
       const json = JSON.stringify(result, undefined, 2);
-      process.stdout.write(json + '\n');
+      process.stdout.write(`${json }\n`);
     }
 
     if (completeFunc) {
       completeFunc();
     }
   }).catch((reason) => {
-    process.stderr.write(reason.message + '\n');
+    process.stderr.write(`${reason.message }\n`);
     if (completeFunc) {
       completeFunc();
     }
@@ -54,14 +51,12 @@ if (process.argv.length > 2) {
     case '-compile': {
       const ast = compile_to_ast(read_file(process.argv[3]));
       if (ast != null) {
-        if (typeof ast == 'string') {
+        if (typeof ast === 'string') {
           process.stdout.write(ast);
-        }
-        else {
+        } else {
           process.stdout.write(JSON.stringify(ast));
         }
-      }
-      else {
+      } else {
         process.exit(1);
       }
       break;
@@ -77,12 +72,11 @@ if (process.argv.length > 2) {
       break;
     }
   }
-}
-else {
+} else {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: 'OCS > '
+    prompt: 'OCS > ',
   });
 
   rl.prompt();
@@ -95,6 +89,4 @@ else {
     }
   });
 }
-
-
 

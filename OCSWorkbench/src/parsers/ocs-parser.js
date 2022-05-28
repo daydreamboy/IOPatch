@@ -165,7 +165,7 @@ function peg$parse(input, options) {
         const paramNamesString = allParamNames.join(', ')
 
         // Note: use \n instead of literal line wrap, make js code more tidy
-        return `export async function ${name}(${paramNamesString}) {\n  return await Weiwo.vm(_spec).callBlock(\n    ${ast},\n    [${blockParamsString}],\n    Weiwo.ContainerAsValue\n)}\n`
+        return `export async function ${name}(${paramNamesString}) {\n  return await Weiwo.vm(_spec).callBlock(\n    ${ast},\n    [${blockParamsString}],\n    Weiwo.ContainerAsValue,\n)}\n`
       },
       peg$c9 = /^[^@]/,
       peg$c10 = peg$classExpectation(["@"], true, false),
