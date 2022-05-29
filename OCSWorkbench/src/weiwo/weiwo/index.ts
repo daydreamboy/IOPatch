@@ -84,6 +84,7 @@ class Weiwo {
     return this.sendRequest({ ast });
   }
 
+  // Network
   async sendRequest(body: object): Promise<any> {
     const url = this.url ? this.url : Weiwo.defaultURL()
     console.log('requesting: ' + url);
@@ -159,6 +160,27 @@ class Weiwo {
 
   static makeDataURLWithDeviceIP(deviceIP: string, name: string): string {
     return `http://${this.makeHost(deviceIP)}/data/${name}`;
+  }
+
+  static createLogSocket(type: string, complete: boolean, callback?: (dict: object) => void): WebSocket {
+    const defaultDeviceIP = this.defaultDeviceIP();
+    const address = this.makeHost(defaultDeviceIP);
+    let url = `ws://${address}/log?type=${type}`;
+    if (complete) {
+      url += '&complete=true&batch=true';
+    }
+
+    const websocket = new WebSocket(url);
+    if (callback) {
+      websocket.onmessage = (event) => callback(JSON.parse(event.data) as object);
+    }
+
+    return websocket;
+  }
+
+  static async gc(spec?: string | number): Promise<void> {
+    const interpreter = Weiwo.vm(spec);
+    await interpreter.invoke('gc');
   }
 }
 

@@ -24,7 +24,6 @@ export default class Home extends Component<{}, HomeState> {
       deviceIPs: Weiwo.DeviceIPs,
       newDeviceIP: '',
     };
-    console.log('on constructor ' + Weiwo.DeviceIPs + '***');
   }
 
   async saveDeviceIPs(deviceIPs: string[]) {
