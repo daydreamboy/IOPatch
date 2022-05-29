@@ -145,7 +145,11 @@ class Weiwo {
   }
 
   static defaultDeviceIP(): string {
-    return Weiwo.DeviceIPs[0]
+    if (Weiwo.DeviceIPs[0]) {
+      return Weiwo.DeviceIPs[0];
+    } else {
+      return simulatorIP;
+    }
   }
 
   // REST style request

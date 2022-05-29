@@ -1,7 +1,7 @@
 @jslib
 
 @jscode
-import Weiwo from "../../weiwo";
+import Weiwo from "../../weiwo/weiwo";
 @end
 
 setupHomePageDataFunctions := ^{

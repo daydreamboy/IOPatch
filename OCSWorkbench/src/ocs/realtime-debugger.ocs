@@ -1,0 +1,98 @@
+@jslib
+
+@jscode
+import Weiwo from "../../weiwo/weiwo";
+@end
+
+doCode := ^id(id body){
+    jscodes := @[]
+
+    blockSpec := @{
+        "body": body,
+        "signature": "v@",
+        "options": @{
+            "on_global": YES,
+            jscodes,
+        }
+    }
+
+    [$.createBlock:(blockSpec) call]
+
+    return [jscodes componentsJoinedByString:";"]
+}
+
+jsonStringFromObjectAddress := ^id(id objAddr){
+    obj := $.objectFromAddress:(objAddr)
+    if(obj is GPBMessage){
+        if([obj respondsToSelector:"toJson"]){
+            obj.toJson.btd_jsonStringEncoded
+        }else{
+            obj.toJsonForJS.btd_jsonStringEncoded
+        }
+    }else{
+        $.class.safeEncodeJSONObject:(obj)
+    }
+}
+
+inspectCall := ^id(id address, id methodName, id args, BOOL onMainQueue){
+    [$ inspectCall:address methodName:methodName argumentStrings:args onMainQueue:onMainQueue]
+}
+
+inspectWeiwoGlobals := ^id{
+    [$ inspectObject:$.userDict options:@{"count": 1000, "hiddenPrefix": "."}]
+}
+
+watchWeiwoGlobalChangedEvent := ^BOOL{
+    @once {
+        @hook TBWeiwo
+
+        -(void)setObject:(id)obj forKeyedSubscript:(NSString *)key{
+            origin
+            $.transientLog:(@{"type": "weiwo_global_changed"})
+        }
+
+        @end
+    }
+
+    YES
+}
+
+jsonFromAddress := ^id(id addr){
+    return [$.class jsonSafeObject:$.objectFromAddress:(addr)]
+}
+
+removeGlobal := ^(id name){
+    [$.userDict removeObjectForKey:name]
+}
+
+autoGlobal := ^id(id addr){
+    obj := [$ objectFromAddress:addr]
+    cls := obj.class
+    className := $.inspect:(cls)["name"]
+    for(i := 0; i< className.length; i=i+1){
+        c := [className characterAtIndex:i]
+        if(!(c == 95 || (c >= 65 && c <= 90))){
+            if(i > 0){
+                i = i-1
+            }
+            break
+        }
+    }
+
+    first := [className substringWithRange:NSMakeRange(i, 1)].lowercaseString
+    prefix := first .. [className substringFromIndex:i+1]
+    for(i := 1; true; i = i+1){
+        name := prefix .. i.stringValue
+        if(!$[name]){
+            $[name] = obj
+            return name
+        }
+    }
+}
+
+renameGlobal := ^(id oldName, id newName){
+    $[newName] = $[oldName]
+    [$.userDict removeObjectForKey:oldName]
+}
+
+@end

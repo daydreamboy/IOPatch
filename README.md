@@ -1,6 +1,10 @@
 # Objective-C Script (OCS)
 [TOC]
 
+疑问
+
+/data/ 而不是/data?
+
 
 
 A patch solution for Objective-C runtime
@@ -475,6 +479,26 @@ OCSatch支持内置2种通道，以及能很方便到适配外部的数据通道
 
 ## patch数据协议
 
+长连接接受POST和GET，以及ws的GET
+
+* POST转成op:data
+
+* GET
+  * /call转成op:call
+  * /completeLog或者/log，转成op:log
+  * /data/转成op:data
+
+* ws的GET
+  * /completeLog或者/log，转成op:subscribe
+
+* 
+
+
+
+websocket
+
+// https://www.geeksforgeeks.org/what-is-web-socket-and-how-it-is-different-from-the-http/
+
 
 
 ```json
@@ -530,6 +554,32 @@ name:函数名，可为nil
 ```
 
 支持上面几种数据对象的序列化
+
+如果是序列化成block，则支持它调用call方法。示例如下，
+
+```json
+{
+    "op": "data",
+    "params": {
+        "args": [],
+        "methodName": "call",
+        "target": {
+            "body": [
+            ...
+            ],
+            "paramNames": [],
+            "signature": "B@",
+            "type": "block",
+            "name": "watchWeiwoGlobalChangedEvent"
+        },
+        "containerAsValue": true
+    }
+}
+```
+
+target是一个block对象，调用对应的call方法
+
+
 
 
 

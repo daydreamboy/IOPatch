@@ -1,25 +1,59 @@
 require 'pathname'
 
-target_file = 'src/services/weiwo/builtin-patches/index.js'
-target_folder = 'src/services'
+target_folder = 'src/services/ocs-workbench'
 
 ocs_sources = Dir.glob("src/ocs/*.ocs")
-ocs_modules = ocs_sources.map{|source| Pathname.new(target_folder).join("#{File.basename(source, '.ocs')}/index.js").to_s }
+ocs_modules = ocs_sources.map{ |source|
+  Pathname.new(target_folder).join("#{File.basename(source, '.ocs')}.js").to_s
+}
 
+js_module_names = []
+
+# Task: generate index file
+task :generate_index_file do |t|
+  content = ''
+  js_module_names.sort!.each {|name|
+    line = "export * from './#{name}';\n"
+    content += line
+  }
+
+  index_file_path = Pathname.new(target_folder).join('index.js').to_s
+
+  IO.write index_file_path, content
+  puts "#{index_file_path} generated!"
+end
+
+# Task: clean up
+task :clean do |t|
+  Dir.glob("#{target_folder}/*.js").each {|path|
+    File.delete(path)
+  }
+  puts "delete all .js files at #{target_folder}"
+end
+
+# Task: default
 task :default => [
+  :clean,
   *ocs_modules,
+  :generate_index_file,
 ]
 
+
 ocs_modules.each_with_index do |ocs_module, index|
-    file ocs_module => [ ocs_sources[index] ] do |t|
-        source = t.prerequisites[0]
-        target = t.name
 
-        puts "source: #{source}"
-        puts "target: #{target}"
+  file ocs_module => [ ocs_sources[index] ] do |t|
+    source = t.prerequisites[0]
+    target = t.name
 
-        sh "node -r esm ./src/parsers/ocs-runner.js -compile #{source} > tmp.js"
-        sh "mv tmp.js #{target}"
-    end
+    puts "source: #{source}"
+    puts "target: #{target}"
+
+    sh "node -r esm ./src/parsers/ocs-runner.js -compile #{source} > tmp.js"
+    sh "mv tmp.js #{target}"
+
+    js_module_names.push("#{File.basename(target, '.js')}")
+
+    puts "----------------\n"
+  end
 end
 
