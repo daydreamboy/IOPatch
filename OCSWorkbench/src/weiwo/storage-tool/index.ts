@@ -16,8 +16,19 @@ class StorageTool {
       if (JSONString) {
         const strings = JSON.parse(JSONString)
         if (Array.isArray(strings) && strings.length != 0) {
+          /*
+          // Note: value is empty array ([])
           // @see https://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array
-          return [... new Set(strings)];
+          const value = [...new Set(strings)];
+          console.log(`***${value}***`);
+          */
+
+          // @see https://stackoverflow.com/a/18328062
+          const filteredStrings = strings.filter((item, index, inputArray) => {
+            return inputArray.indexOf(item) == index;
+          });
+
+          return filteredStrings;
         }
       }
     }

@@ -1,19 +1,18 @@
-import {Component} from "react";
-import {Button, Input} from "@alifd/next";
-import React from 'react';
+import React, { Component } from 'react';
+import { Button, Input } from '@alifd/next';
 import DeviceConnectBalloon from './components/DeviceConnectBalloon';
-import DevicePanel from "@/pages/Home/components/DevicePanel";
+import DevicePanel from '@/pages/Home/components/DevicePanel';
 import {
   Add,
   History,
   Refresh,
 } from '@icon-park/react';
 import Weiwo from '@/weiwo/weiwo';
-import { setStateAsync } from "@/weiwo/utils";
+import { setStateAsync } from '@/weiwo/utils';
 
-type HomeState = {
-  deviceIPs: string[]
-  newDeviceIP: string
+interface HomeState {
+  deviceIPs: string[];
+  newDeviceIP: string;
 }
 
 export default class Home extends Component<{}, HomeState> {
@@ -25,56 +24,56 @@ export default class Home extends Component<{}, HomeState> {
       deviceIPs: Weiwo.DeviceIPs,
       newDeviceIP: '',
     };
-    console.log("on constructor");
+    console.log('on constructor ' + Weiwo.DeviceIPs + '***');
   }
 
   async saveDeviceIPs(deviceIPs: string[]) {
-    console.log("save deviceIPs: " + deviceIPs);
+    console.log(`save deviceIPs: ${ deviceIPs}`);
 
-    Weiwo.saveDeviceIPs(deviceIPs)
-    await this.refreshDeviceList()
+    Weiwo.saveDeviceIPs(deviceIPs);
+    await this.refreshDeviceList();
   }
 
   async refreshDeviceList() {
-    await setStateAsync(this, { deviceIPs: [] })
-    await setStateAsync(this, { deviceIPs: Weiwo.DeviceIPs })
+    await setStateAsync(this, { deviceIPs: [] });
+    await setStateAsync(this, { deviceIPs: Weiwo.DeviceIPs });
   }
 
   render() {
     const addDeviceWithDeviceIP = async (arg: string) => {
-      const { deviceIPs } = this.state
+      const { deviceIPs } = this.state;
       if (Array.isArray(arg)) {
         for (const newDeviceIP of arg) {
           if (!deviceIPs.includes(newDeviceIP)) {
-            deviceIPs.unshift(newDeviceIP)
+            deviceIPs.unshift(newDeviceIP);
           }
         }
       } else {
-        const newDeviceIP = arg
-        deviceIPs.unshift(newDeviceIP)
+        const newDeviceIP = arg;
+        deviceIPs.unshift(newDeviceIP);
       }
 
-      await this.saveDeviceIPs(deviceIPs)
-    }
+      await this.saveDeviceIPs(deviceIPs);
+    };
 
     const addDevice = async () => {
-      const { newDeviceIP } = this.state
+      const { newDeviceIP } = this.state;
       if (newDeviceIP.length == 0) {
         console.error('deviceIP is empty');
-        return
+        return;
       }
 
-      await addDeviceWithDeviceIP(newDeviceIP)
-    }
+      await addDeviceWithDeviceIP(newDeviceIP);
+    };
 
     const { deviceIPs } = this.state;
 
     return (
-      <div className='home-page'>
+      <div className="home-page">
         {/* 第一行 */}
         <div style={{ marginBottom: 10 }}>
           <Input
-            placeholder='设备IP'
+            placeholder="设备IP"
             style={{ width: 250, marginRight: 10 }}
             hasClear
             onChange={(value: string) => this.setState({ newDeviceIP: value })}
@@ -85,7 +84,7 @@ export default class Home extends Component<{}, HomeState> {
             buttonLabel={
               <span>摇一摇连接</span>
             }
-            token='*'
+            token="*"
             onDeviceConnected={'todo'}
           />
           <DeviceConnectBalloon
@@ -107,20 +106,21 @@ export default class Home extends Component<{}, HomeState> {
           <Button.Group style={{ marginTop: 10 }}>
             <Button onClick={() => {
               alert('TODO');
-            }}>
+            }}
+            >
               <Add /> 新增设备
             </Button>
             <Button
               onClick={() => {
-                Weiwo.resetDeviceIPsToDefault()
-                window.location.reload()
+                Weiwo.resetDeviceIPsToDefault();
+                window.location.reload();
               }}
             >
               <History /> 恢复默认设置
             </Button>
             <Button
               onClick={async () => {
-                await this.refreshDeviceList()
+                await this.refreshDeviceList();
               }}
             >
               <Refresh /> 重新刷新设备列表
@@ -138,23 +138,23 @@ export default class Home extends Component<{}, HomeState> {
                   index={index}
                   key={index}
                   showRemoveButton={deviceIPs.length > 1}
-                  removeDeviceCallback={ async () => {
-                    const { deviceIPs } = this.state
-                    deviceIPs.splice(index, 1)
-                    await this.saveDeviceIPs(deviceIPs)
+                  removeDeviceCallback={async () => {
+                    const { deviceIPs } = this.state;
+                    deviceIPs.splice(index, 1);
+                    await this.saveDeviceIPs(deviceIPs);
                   }}
-                  setDefaultCallback={ async () => {
-                    const { deviceIPs } = this.state
-                    deviceIPs.splice(index, 1)
-                    deviceIPs.unshift(element)
-                    await this.saveDeviceIPs(deviceIPs)
+                  setDefaultCallback={async () => {
+                    const { deviceIPs } = this.state;
+                    deviceIPs.splice(index, 1);
+                    deviceIPs.unshift(element);
+                    await this.saveDeviceIPs(deviceIPs);
                   }}
                 />
-              )
-          })
+              );
+            })
           }
         </div>
       </div>
-    )
+    );
   }
 }

@@ -8,19 +8,19 @@ const simulatorIP = '127.0.0.1:2222';
 const storageKeyDeviceIPs = 'deviceIPs';
 
 function WeiwoSerializeArgument(arg: any): any {
-  const type = typeof arg
+  const type = typeof arg;
   if (type == 'number' || type == 'string' || type == 'boolean' || arg == null) {
-    return arg
+    return arg;
   } else if (Array.isArray(arg)) {
-    return arg.map(WeiwoSerializeArgument)
+    return arg.map(WeiwoSerializeArgument);
   } else if (type == 'object') {
     if (arg.target) {
-      return arg.target
+      return arg.target;
     } else {
-      return { type: 'raw', value: arg }
+      return { type: 'raw', value: arg };
     }
   } else {
-    return null
+    return null;
   }
 }
 
@@ -35,45 +35,45 @@ class Weiwo {
   url: string;
 
   constructor(target: object, deviceSpec?: number | string) {
-    this.target = target
+    this.target = target;
 
-    const specType = typeof deviceSpec
+    const specType = typeof deviceSpec;
     if (specType == 'string') {
-      this.url = <string>deviceSpec
+      this.url = <string>deviceSpec;
     } else if (specType == 'number') {
-      const deviceIndex = <number>deviceSpec
-      this.url = Weiwo.makeURLWithDeviceIP(Weiwo.DeviceIPs[deviceIndex])
+      const deviceIndex = <number>deviceSpec;
+      this.url = Weiwo.makeURLWithDeviceIP(Weiwo.DeviceIPs[deviceIndex]);
     } else {
-      this.url = Weiwo.defaultURL()
+      this.url = Weiwo.defaultURL();
     }
   }
 
   async callBlock(blockAST: object, args: Array<any>, flags?: number): Promise<any> {
-    const block = new Weiwo(blockAST, this.url)
-    return await block.invoke('call', args, flags)
+    const block = new Weiwo(blockAST, this.url);
+    return await block.invoke('call', args, flags);
   }
 
   static vm(deviceSpec?: number | string) {
-    return new Weiwo({ type: 'weiwo' }, deviceSpec)
+    return new Weiwo({ type: 'weiwo' }, deviceSpec);
   }
 
   async invoke(methodName: string, args?: Array<any>, flags?: number): Promise<any> {
-    const body: WeiwoRequest = new WeiwoRequest
-    body.methodName = methodName
+    const body: WeiwoRequest = new WeiwoRequest();
+    body.methodName = methodName;
     if (this.target != null) {
-      body.target = this.target
+      body.target = this.target;
     }
     if (args != undefined) {
-      body.args = args.map(WeiwoSerializeArgument)
+      body.args = args.map(WeiwoSerializeArgument);
     }
 
     if (flags != undefined) {
       if (flags & Weiwo.MainQueue) {
-        body.mainQueue = true
+        body.mainQueue = true;
       }
 
       if (flags & Weiwo.ContainerAsValue) {
-        body.containerAsValue = true
+        body.containerAsValue = true;
       }
     }
 
@@ -89,38 +89,38 @@ class Weiwo {
     console.log('requesting: ' + url);
     console.log('ast: ' + JSON.stringify(body));
     try {
-      const dict = <WeiwoResponse>(await axios.post(url, body, { timeout: 30000 })).data
+      const dict = <WeiwoResponse>(await axios.post(url, body, { timeout: 30000 })).data;
 
       if (dict.ok) {
         const result = dict.result
         const resultType = typeof result
-        if (resultType == 'number' || resultType == 'string' || resultType == 'boolean' || result == null)
-          return result
-        else if (resultType == 'object') {
+        if (resultType == 'number' || resultType == 'string' || resultType == 'boolean' || result == null) {
+          return result;
+        } else if (resultType == 'object') {
           if (result.type == 'raw') {
-            return result.value
+            return result.value;
           } else {
-            return new Weiwo(result, url)
+            return new Weiwo(result, url);
           }
         }
       } else {
-        return Promise.reject(new Error(dict.msg))
+        return Promise.reject(new Error(dict.msg));
       }
     } catch (err) {
       console.error('[OCSWorkbench] ' + err);
-      return undefined
+      return undefined;
     }
   }
 
-  // Manage device IPs 2
+  // Manage device IPs
   static saveDeviceIPs(deviceIPs: Array<string>): void {
     // @see https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
     // BUG: return [] using [... new Set(deviceIPs)];
     //Weiwo.DeviceIPs = [... new Set(deviceIPs)];
 
-    Weiwo.DeviceIPs = deviceIPs.filter(function(item, pos) {
+    Weiwo.DeviceIPs = deviceIPs.filter((item, pos) => {
       return deviceIPs.indexOf(item) == pos;
-    })
+    });
     console.log(deviceIPs);
     console.log(Weiwo.DeviceIPs);
 
@@ -134,14 +134,14 @@ class Weiwo {
 
   static makeHost(str: string): string {
     if (!str.includes('.')) {
-      return `${this.GatewayHost}:9010/${str}`
+      return `${this.GatewayHost}:9010/${str}`;
     }
 
-    return str.includes(':') ? str : `${str}:9000`
+    return str.includes(':') ? str : `${str}:9000`;
   }
 
   static defaultURL(): string {
-    return Weiwo.makeURLWithDeviceIP(Weiwo.defaultDeviceIP())
+    return Weiwo.makeURLWithDeviceIP(Weiwo.defaultDeviceIP());
   }
 
   static defaultDeviceIP(): string {
@@ -154,11 +154,11 @@ class Weiwo {
 
   // REST style request
   static makeURLWithDeviceIP(deviceIP: string): string {
-    return `http://${this.makeHost(deviceIP)}/call`
+    return `http://${this.makeHost(deviceIP)}/call`;
   }
 
   static makeDataURLWithDeviceIP(deviceIP: string, name: string): string {
-    return `http://${this.makeHost(deviceIP)}/data/${name}`
+    return `http://${this.makeHost(deviceIP)}/data/${name}`;
   }
 }
 

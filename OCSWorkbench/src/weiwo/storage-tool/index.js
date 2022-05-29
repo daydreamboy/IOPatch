@@ -1,12 +1,3 @@
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 var StorageTool = /** @class */ (function () {
     function StorageTool() {
     }
@@ -26,8 +17,17 @@ var StorageTool = /** @class */ (function () {
             if (JSONString) {
                 var strings = JSON.parse(JSONString);
                 if (Array.isArray(strings) && strings.length != 0) {
+                    /*
+                    // Note: value is empty array ([])
                     // @see https://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array
-                    return __spreadArray([], new Set(strings), true);
+                    const value = [...new Set(strings)];
+                    console.log(`***${value}***`);
+                    */
+                    // @see https://stackoverflow.com/a/18328062
+                    var filteredStrings = strings.filter(function (item, index, inputArray) {
+                        return inputArray.indexOf(item) == index;
+                    });
+                    return filteredStrings;
                 }
             }
         }

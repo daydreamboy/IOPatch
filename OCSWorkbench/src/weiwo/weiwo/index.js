@@ -95,7 +95,7 @@ var Weiwo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var body;
             return __generator(this, function (_a) {
-                body = new WeiwoRequest;
+                body = new WeiwoRequest();
                 body.methodName = methodName;
                 if (this.target != null) {
                     body.target = this.target;
@@ -140,8 +140,9 @@ var Weiwo = /** @class */ (function () {
                         if (dict.ok) {
                             result = dict.result;
                             resultType = typeof result;
-                            if (resultType == 'number' || resultType == 'string' || resultType == 'boolean' || result == null)
+                            if (resultType == 'number' || resultType == 'string' || resultType == 'boolean' || result == null) {
                                 return [2 /*return*/, result];
+                            }
                             else if (resultType == 'object') {
                                 if (result.type == 'raw') {
                                     return [2 /*return*/, result.value];
@@ -164,7 +165,7 @@ var Weiwo = /** @class */ (function () {
             });
         });
     };
-    // Manage device IPs 2
+    // Manage device IPs
     Weiwo.saveDeviceIPs = function (deviceIPs) {
         // @see https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
         // BUG: return [] using [... new Set(deviceIPs)];
